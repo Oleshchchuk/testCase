@@ -1,0 +1,31 @@
+
+.LinkedCompareList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.LinkedCompareList-Item {
+    position: relative;
+    min-width: 150px;
+}
+
+.RemoveButton {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.LinkedCompareList-Item:hover .RemoveButton {
+    opacity: 1;
+}
+
+.Title {
+    position: absolute;
+    top: 22px;
+}

@@ -1,0 +1,19 @@
+.ProductCard {
+    border: 1px dashed black;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 100%;
+}
+
+.ProductCard_NoBorder {
+    border: none;
+}
+
+.ProductCard-Name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.ProductCard-Price {
+    margin-bottom: 5px;
+}

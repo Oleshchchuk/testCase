@@ -1,0 +1,8 @@
+.Container {
+    display: flex;
+    gap: 10px;
+}
+
+.Container-Item {
+    width: 50%;
+}
