@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "target": "ESNEXT",
     "module": "esnext",
     "lib": [
@@ -9,7 +10,6 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -18,16 +18,19 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "alwaysStrict": true
-  },
-  "compilerOptions": {
+    "alwaysStrict": true,
     "jsx": "react-jsxdev",
     "esModuleInterop": true
   },
   "include": [
     "src"
   ],
-  "filesGlob": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["build", "node_modules"]
+  "filesGlob": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "build",
+    "node_modules"
+  ]
 }
