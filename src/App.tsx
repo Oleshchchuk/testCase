@@ -4,6 +4,7 @@ import { Root } from './view/components/root';
 import { ProductPage } from './view/components/product-page';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import {UseCaseProvider} from "./contexts/UseCaseContext";
 
 const router = createBrowserRouter([
   {
@@ -18,9 +19,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+      <UseCaseProvider>
+        <Provider store={store}>
+          <RouterProvider router={router}/>
+        </Provider>
+      </UseCaseProvider>
   );
 }
 
