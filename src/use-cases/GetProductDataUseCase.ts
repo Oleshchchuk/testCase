@@ -1,16 +1,17 @@
 import {Category, LinkedProduct, Product, ProductLinkType} from '../models';
 import {IProductPageRepository,} from "../services/products/interfaces";
-import {IStateManagementService} from "../services/state/interfaces";
+import {IStoreManagementService} from "../services/state/interfaces";
 import {IBaseUseCase} from "./interfaces";
 import {logger} from "./utils";
 
 /**
- * Кейс с запросом всех необходимых данные для коррктной отрисовки ПродуктПейдж
+ * Кейс с запросом Продукта, запросом Связанныйх продуктов,
+ * категорий, опередлением их связей и сохранением их в хранилище
  */
-export class FetchProductDataUseCase implements IBaseUseCase<{ productId: string }> {
+export class GetProductDataUseCase implements IBaseUseCase {
     constructor(
         private readonly productService: IProductPageRepository,
-        private readonly stateService: IStateManagementService
+        private readonly stateService: IStoreManagementService
     ) {
     }
 

@@ -1,45 +1,59 @@
-import {FC, useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
+import {ProductPage} from "./ProductPage";
 import {useParams} from "react-router-dom";
-import {UseCaseContext} from "../../../contexts/UseCaseContext";
-import {ProductCard} from "../common/ProductCard";
-import {productSelector} from "../../../store/selectors/product-page";
-import {useSelector} from "react-redux";
-import {LinkedProductList} from "./LinkedProductList";
-import {LinkedCompareList} from "./LinkedCompareList";
-import {cn} from "@bem-react/classname";
-import './style.css';
+import {useUseCase} from "../../../contexts/UseCaseContext";
+import {useModal} from "../../hooks/useModal";
 
-const cnContainer = cn('Container');
-
-export const ProductPage: FC = () => {
+export const ProductPageContainer = () => {
     const {productId} = useParams()
-    const {fetchProductData, clearCompareList} = useContext(UseCaseContext);
-    const product = useSelector(productSelector);
+    const {
+        getProductData,
+        clearCompareList,
+        getProduct,
+        getSelectedProduct,
+        removeSelectedProduct,
+        getCompareList
+    } = useUseCase()
+    const removeSelected = () => removeSelectedProduct.execute()
+    const product = getProduct();
+    const selectedProduct = getSelectedProduct();
+    const compareList = getCompareList();
+    const {openModal, isOpen, closeModal} = useModal(450, removeSelected);
+
+    const onDestroy = () => {
+        if (compareList.length) {
+            clearCompareList.execute()
+        }
+        if (selectedProduct) {
+            removeSelected()
+        }
+        closeModal()
+    }
+
+    useEffect(() => {
+        if (selectedProduct) {
+            openModal()
+        }
+    }, [selectedProduct])
 
     useEffect(() => {
         if (productId) {
-            fetchProductData.execute({productId})
+            getProductData.execute({productId})
         }
 
-
-        return () => {
-            clearCompareList.execute()
-        };
-    }, [clearCompareList, fetchProductData, productId])
+        return () => onDestroy()
+    }, [clearCompareList, getProductData, productId])
 
     if (!product) {
         return <div>Loading...</div>
     }
 
     return (
-        <>
-            <div className={cnContainer()}>
-                <div className={cnContainer('Item')}>
-                    <ProductCard product={product}/>
-                </div>
-                <LinkedCompareList/>
-            </div>
-            <LinkedProductList/>
-        </>
+        <ProductPage
+            product={product}
+            onModalClose={closeModal}
+            isModalOpen={isOpen}
+            selectedProduct={selectedProduct}/>
     );
 };
+

@@ -1,42 +1,20 @@
-import React, {FC, useContext} from 'react';
+import React, {FC} from 'react';
 import {LinkedProduct} from "../../../../models";
-import {Modal} from "../../common/modal";
-import {ProductCard} from "../../common/ProductCard";
-import {UseCaseContext} from "../../../../contexts/UseCaseContext";
-import {useModal} from "../../../hooks/useModal";
-
 
 interface LinkedProductItemProps {
-    product: LinkedProduct;
+    linkedProduct: LinkedProduct;
+    handleClick: (linkedProduct: LinkedProduct) => void;
+    linkName: string | undefined;
 }
 
-const linkNameByType = {analog: 'Аналог', related: 'Сопутствующий товар'}
+const LinkedProductListItem: FC<LinkedProductItemProps> = ({linkedProduct, handleClick, linkName}) => {
 
-const LinkedProductListItem: FC<LinkedProductItemProps> = ({product}) => {
-    const {addProductToCompareList} = useContext(UseCaseContext);
-    const {isOpen, toggleModal} = useModal();
-
-    const linkName = product.linkType && linkNameByType[product.linkType]
-    const handleClick = () => {
-        if (linkName === linkNameByType.analog) {
-            return addProductToCompareList.execute({product});
-        }
-        toggleModal()
-    };
 
     return (
-        <>
-            <li>
-                {linkName && linkName + ': '}
-                <button onClick={handleClick}>{product.name}</button>
-            </li>
-            {isOpen && (
-                <Modal onClose={toggleModal}>
-                    <ProductCard product={product} noBorder></ProductCard>
-                </Modal>
-            )}
-        </>
-
+        <li>
+            {linkName && linkName + ': '}
+            <button onClick={() => handleClick(linkedProduct)}>{linkedProduct.name}</button>
+        </li>
     );
 }
 

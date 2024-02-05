@@ -1,13 +1,21 @@
-import {dispatch} from "../../store";
-import {LinkedProduct, Product, ProductLinkType} from "../../models";
+import {dispatch, store} from "../../store";
+import {LinkedProduct, Product} from "../../models";
 import {
     addProductToCompareList,
     clearCompareList,
-    removeProductFromCompareList,
+    removeProductFromCompareList, removeSelectedProduct,
     setLinkedProducts,
-    setProduct
+    setProduct, setSelectedProduct
 } from "../../store/actions/product-page";
 import {StateService} from "./StateService";
+import {
+    compareListSelector,
+    linkedProductsSelector,
+    productSelector,
+    selectedProductSelector
+} from "../../store/selectors/product-page";
+import {useSelector} from "react-redux";
+import {IStore} from "./interfaces";
 
 
 export class ReduxService extends StateService {
@@ -15,11 +23,15 @@ export class ReduxService extends StateService {
         dispatch(setProduct(product));
     }
 
+    getProduct = () => useSelector(productSelector)
+
     setLinkedProducts(linkedProducts: LinkedProduct[]): void {
         dispatch(setLinkedProducts(this.sortLinkedProducts(linkedProducts)));
     }
 
-    addProductToCompareList(product: Product): void {
+    getLinkedProductsList = () => useSelector(linkedProductsSelector)
+
+    addProductToCompareList(product: LinkedProduct): void {
         dispatch(addProductToCompareList(product));
     }
 
@@ -31,20 +43,19 @@ export class ReduxService extends StateService {
         dispatch(clearCompareList());
     }
 
-    private sortLinkedProducts(linkedProducts: LinkedProduct[]): LinkedProduct[] {
-        const getWeight = (linkType: ProductLinkType | undefined): number => {
-            switch (linkType) {
-                case 'analog':
-                    return 1;
-                case 'related':
-                    return 2;
-                default:
-                    return 3;
-            }
-        };
+    getProductCompareList = () => useSelector(compareListSelector)
 
-        return linkedProducts.sort((a, b) => {
-            return getWeight(a.linkType) - getWeight(b.linkType);
-        });
+    getSelectedProduct= () => useSelector(selectedProductSelector)
+
+    removeSelectedProduct(): void {
+        dispatch(removeSelectedProduct());
+    }
+
+    setSelectedProduct(product: LinkedProduct): void {
+        dispatch(setSelectedProduct(product));
+    }
+
+    getStore(): IStore {
+        return store.getState()
     }
 }

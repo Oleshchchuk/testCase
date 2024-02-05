@@ -1,4 +1,4 @@
-import {Product} from '../models';
+import {LinkedProduct} from '../models';
 import {ReduxService} from "../services/state/ReduxService";
 import {RemoveProductFromCompareListUseCase} from "./RemoveProductFromCompareListUseCase";
 
@@ -8,7 +8,7 @@ describe('RemoveProductFromCompareListUseCase', () => {
     it('should call removeProductFromCompareList on reduxService with the product', () => {
         const mockReduxService = new ReduxService() as jest.Mocked<ReduxService>;
         const useCase = new RemoveProductFromCompareListUseCase(mockReduxService);
-        const product: Product = {id: '1', name: 'Test Product', price: 100};
+        const product: LinkedProduct = {id: '1', name: 'Test Product', price: 100, linkType: 'analog'};
 
         useCase.execute({product});
 

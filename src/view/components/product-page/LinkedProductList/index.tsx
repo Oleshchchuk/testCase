@@ -1,17 +1,30 @@
-import React, {FC} from 'react';
+import React from 'react';
+import {useUseCase} from "../../../../contexts/UseCaseContext";
 import LinkedProductListItem from "./LinkedProductListItem";
-import {useSelector} from "react-redux";
-import {linkedProductsSelector} from "../../../../store/selectors/product-page";
 
-export const LinkedProductList: FC = () => {
-    const linkedProducts = useSelector(linkedProductsSelector);
+const linkNameByType = {analog: 'Аналог', related: 'Сопутствующий товар'}
+export const LinkedProductListContainer = () => {
+    const {getLinkedProductsList, linkedListItemUseCaseAdapter} = useUseCase()
+    const linkedProducts = getLinkedProductsList();
+
+    if (!linkedProducts.length) {
+        return null
+    }
 
     return (
         <ul>
             {linkedProducts.map((linkedProduct) => (
-                <LinkedProductListItem key={linkedProduct.id} product={linkedProduct}/>
+                <LinkedProductListItem
+                    linkName={linkedProduct.linkType && linkNameByType[linkedProduct.linkType]}
+                    key={linkedProduct.id}
+                    linkedProduct={linkedProduct}
+                    handleClick={(linkedProduct) =>linkedListItemUseCaseAdapter(linkedProduct)}
+                />
             ))}
         </ul>
 
-    )
+    );
 };
+
+
+

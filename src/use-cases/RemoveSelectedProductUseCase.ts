@@ -3,15 +3,14 @@ import {IBaseUseCase} from "./interfaces";
 import {logger} from "./utils";
 
 /**
- * Кейс отчищения списка сравнения
+ * Кейс удаления выбранного продукта
  */
-export class ClearCompareListUseCase implements IBaseUseCase {
+export class RemoveSelectedProductUseCase implements IBaseUseCase {
     constructor(private readonly stateService: IStoreManagementService) {
     }
 
     @logger
     execute(): void {
-        this.stateService.clearCompareList();
-
+        this.stateService.removeSelectedProduct();
     }
 }

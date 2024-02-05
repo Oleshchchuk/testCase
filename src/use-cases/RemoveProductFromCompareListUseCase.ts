@@ -1,17 +1,19 @@
-import {Product} from "../models";
-import {IStateManagementService} from "../services/state/interfaces";
+import {LinkedProduct} from "../models";
+import {IStoreManagementService} from "../services/state/interfaces";
 import {IBaseUseCase} from "./interfaces";
 import {logger} from "./utils";
 
 /**
- * Кейс удаления элемента из списка сравнения
+ * Кейс удаления продукта из списка сравнения
  */
-export class RemoveProductFromCompareListUseCase implements IBaseUseCase<{ product: Product }> {
-    constructor(private readonly stateService: IStateManagementService) {
+export class RemoveProductFromCompareListUseCase implements IBaseUseCase {
+
+    constructor(private readonly stateService: IStoreManagementService) {
     }
 
     @logger
-    execute(props: { product: Product }): void {
+    execute(props: { product: LinkedProduct }): void {
         this.stateService.removeProductFromCompareList(props.product);
     }
 }
+

@@ -1,22 +1,17 @@
 import {IStoreManagementService} from "../services/state/interfaces";
-import {LinkedProduct} from "../models";
 import {IBaseUseCase} from "./interfaces";
 import {logger} from "./utils";
+import {LinkedProduct} from "../models";
 
 /**
- * Кейс добавления продукта в список для сравнения
+ * Кейс соханения выбранного продукта
  */
-export class AddProductToCompareListUseCase implements IBaseUseCase {
-
+export class AddSelectedProductUseCase implements IBaseUseCase {
     constructor(private readonly stateService: IStoreManagementService) {
     }
 
     @logger
     execute(props: { product: LinkedProduct }): void {
-        this.stateService.addProductToCompareList(props.product);
+        this.stateService.setSelectedProduct(props.product);
     }
 }
-
-
-
-

@@ -1,25 +1,28 @@
-import React, {FC} from 'react';
-import {useSelector} from "react-redux";
-import {compareListSelector} from "../../../../store/selectors/product-page";
+import React from 'react';
+import {LinkedCompareList} from "./LinkedCompareList";
+import {useUseCase} from "../../../../contexts/UseCaseContext";
 import {LinkedCompareListItem} from "./LinkedCompareListItem";
-import './style.css';
+import {LinkedProduct} from "../../../../models";
 
-export const LinkedCompareList: FC = () => {
-    const compareList = useSelector(compareListSelector);
+export const LinkedCompareListContainer = () => {
+    const {getCompareList, removeProductFromCompareList, addSelectedProduct} = useUseCase()
+    const compareList = getCompareList();
 
     if (!compareList.length) {
         return null
     }
 
     return (
-        <div>
-            <span className={'Title'}>Сравнение</span>
-            <ul className={'LinkedCompareList'}>
-                {compareList.map((compareItem) => (
-                    <LinkedCompareListItem product={compareItem} key={compareItem.id}/>
-                ))}
-            </ul>
-        </div>
-
-    )
+        <LinkedCompareList>
+            {compareList.map((compareItem) => (
+                <LinkedCompareListItem
+                    linkedProduct={compareItem}
+                    key={compareItem.id}
+                    handleRemove={(linkedProduct: LinkedProduct) => removeProductFromCompareList.execute({product: linkedProduct})}
+                    handleOpenModal={(linkedProduct: LinkedProduct) => addSelectedProduct.execute({product: linkedProduct})}
+                />
+            ))}
+        </LinkedCompareList>
+    );
 };
+

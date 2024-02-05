@@ -1,23 +1,31 @@
-import {useCallback, useEffect, useState} from 'react';
 import {useLessThenMediaQuery} from "./media-query";
+import {useEffect, useState} from 'react';
 
-export const useModal = (isMobileWidth = 450) => {
+
+export const useModal = (isMobileWidth: number, onCloseFn: () => void) => {
     const isMobile = useLessThenMediaQuery(isMobileWidth);
     const [isOpen, setIsOpen] = useState(false);
 
-    const toggleModal = useCallback(() => {
-        setIsOpen(prev => {
-            if (isMobile) {
-                window.location.hash = prev ? '' : '#myModal';
-            }
-            return !prev;
-        });
-    }, [isMobile]);
+    const openModal = () => {
+        if (isMobile) {
+            window.location.hash = '#myModal';
+
+        }
+        setIsOpen(true);
+    }
+
+    const closeModal = () => {
+        if (isMobile) {
+            window.location.hash = '';
+        }
+        setIsOpen(false);
+        onCloseFn();
+    }
 
     useEffect(() => {
         const handleHashChange = () => {
             if (window.location.hash !== '#myModal' && isOpen) {
-                setIsOpen(false);
+                closeModal();
             }
         };
 
@@ -29,8 +37,8 @@ export const useModal = (isMobileWidth = 450) => {
             if (isMobile) {
                 window.removeEventListener('hashchange', handleHashChange);
             }
-        }
-    }, [isMobile, isOpen]);
+        };
+    }, [isMobile, isOpen, closeModal]);
 
-    return {isOpen, toggleModal};
+    return {isOpen, openModal, closeModal};
 };

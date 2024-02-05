@@ -1,35 +1,87 @@
 import {LinkedProduct, Product} from '../../models';
 
 /**
- * Интерфейс сервиса для управления хранением данных страницы товара
+ * Интерфейс хранилища
  */
-export interface IStateManagementService {
+export interface IStore {
+    productPage: {
+        product?: Product;
+        linkedProducts?: LinkedProduct[];
+        comparingProducts?: LinkedProduct[];
+        selectedProduct?: LinkedProduct;
+    };
+}
+
+
+
+
+/**
+ * Интерфейс сервиса для управления хранением данных страницы продукта
+ */
+export interface IStoreManagementService {
     /**
-     * Сохраняет товар.
-     * @param product Объект товара.
+     * Сохраняет продукт в хранилище
+     * @param product Объект продукта.
      */
     setProduct(product: Product): void;
 
     /**
-     * Сохраняет список связанных товаров.
-     * @param linkedProducts Массив связанных товаров.
+     * Получает продукт из хранилища
      */
+    getProduct(): Product | undefined;
+
+    /**
+     * Сохраняет список связанных продуктов в хранилище
+     * @param linkedProducts Массив связанных продуктов.
+     */
+
     setLinkedProducts(linkedProducts: LinkedProduct[]): void;
 
     /**
-     * Добавляет товар в список сравнения.
-     * @param product Товар для добавления в список сравнения.
+     * Получает список связанных продуктов из хранилища
      */
-    addProductToCompareList(product: Product): void;
+    getLinkedProductsList(): LinkedProduct[];
 
     /**
-     * Удаляет товар из списка сравнения.
-     * @param product Товар для удаления из списка сравнения.
+     * Добавляет продукт в список сравнения.
+     * @param linkedProduct продукт для добавления в список сравнения.
      */
-    removeProductFromCompareList(product: Product): void;
+    addProductToCompareList(linkedProduct: LinkedProduct): void;
 
     /**
-     * Очищает список сравнения товаров.
+     * Получает список список сравнения из хранилища
+     */
+    getProductCompareList(): LinkedProduct[];
+
+    /**
+     * Удаляет продукт из списка сравнения.
+     * @param product продукт для удаления из списка сравнения.
+     */
+    removeProductFromCompareList(product: LinkedProduct): void;
+
+    /**
+     * Очищает список сравнения продуктов.
      */
     clearCompareList(): void;
+
+    /**
+     * Сохраняет выбранный продукт в хранилище
+     */
+    setSelectedProduct(product: Product): void;
+
+    /**
+     * Получает выбранный продукт в хранилище
+     */
+    getSelectedProduct(): Product | undefined;
+
+    /**
+     * Удаляет выбранный продукт в хранилище
+     */
+    removeSelectedProduct(): void;
+
+    /**
+     * Получает выбранный продукт в хранилище
+     */
+    getStore(): IStore;
 }
+
